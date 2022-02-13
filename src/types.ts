@@ -27,3 +27,6 @@ export type TEvent = {
 
 // What the endpoints will return
 export type TEndpointResponse = TEvent | TEvent[];
+
+// Modal Sort Type
+export type ModalSortType = "TEL" | "TLE" | "AZ";

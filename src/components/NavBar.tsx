@@ -16,15 +16,15 @@ const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
 
   const handleSearchResultsDismiss = useCallback(() => {
     setIsSearchActive(false);
-    setSearchValue("");
-    setSearchResults(events);
   }, []);
 
   const handleSearchChange = useCallback((value: string) => {
     setSearchValue(value);
     setIsSearchActive(value.length > 0);
     setSearchResults(
-      searchResults.filter(({ name }) => name.includes(value.toLowerCase()))
+      searchResults.filter(({ name }) =>
+        name.toLowerCase().includes(value.toLowerCase())
+      )
     );
   }, []);
 
@@ -56,14 +56,12 @@ const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
 
   const searchResultsMarkup = (
     <ActionList
-      items={searchResults.map(
-        ({ name, public_url, private_url, permission }) => {
-          return {
-            content: name,
-            url: permission == "public" ? public_url : private_url,
-          };
-        }
-      )}
+      items={searchResults.map(({ id, name }) => {
+        return {
+          content: name,
+          url: `/event/${id}`,
+        };
+      })}
     />
   );
 

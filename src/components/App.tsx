@@ -9,7 +9,7 @@ import theme from "../theme";
 // import { useState } from "react";
 
 import { useQuery } from "@apollo/client";
-import { getAllEvents } from "../eventsQuery";
+import { getAllEvents } from "../query/eventsQuery";
 
 const App: React.FC<{}> = () => {
   const { loading, error, data } = useQuery(getAllEvents);
