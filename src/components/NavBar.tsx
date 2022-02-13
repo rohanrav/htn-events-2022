@@ -1,15 +1,18 @@
 import React, { useCallback, useState } from "react";
 import { ActionList, TopBar } from "@shopify/polaris";
 import { TEvent } from "../types";
-import { User } from "../user";
 
 interface Props {
   isLoggedIn: boolean;
   events: TEvent[];
-  user: User | null;
+  setLoggedInCallback: (loggedIn: boolean) => void;
 }
 
-const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
+const NavBar: React.FC<Props> = ({
+  isLoggedIn,
+  events,
+  setLoggedInCallback,
+}) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<TEvent[]>(events);
@@ -41,6 +44,8 @@ const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
 
   const authButtonMarkup = (
     <a
+      onClick={() => isLoggedIn && setLoggedInCallback(false)}
+      href="/login"
       className={`Polaris-Button Polaris-Button--${
         !isLoggedIn ? "primary" : "destructive"
       }`}

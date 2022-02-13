@@ -6,9 +6,10 @@ import { ModalSortType, TEvent, TEventType } from "../types";
 
 interface Props {
   events: TEvent[];
+  isLoggedIn: boolean;
 }
 
-const Main: React.FC<Props> = ({ events }) => {
+const Main: React.FC<Props> = ({ events, isLoggedIn }) => {
   const [isModalActive, setModalActive] = useState(false);
   const [sortValue, setSortValue] = useState<ModalSortType>("TEL");
   const [filterValues, setFilterValues] = useState<TEventType[]>([
@@ -53,7 +54,7 @@ const Main: React.FC<Props> = ({ events }) => {
             events={events}
             sortOption={sortValue}
             filterOptions={filterValues}
-            isLoggedIn={true}
+            isLoggedIn={isLoggedIn}
           />
         </Layout>
       </Page>

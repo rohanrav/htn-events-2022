@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import NavBar from "./NavBar";
 // import { User } from "../user";
 
@@ -6,13 +6,19 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./Main";
 import { AppProvider, Frame } from "@shopify/polaris";
 import theme from "../theme";
-// import { useState } from "react";
 
 import { useQuery } from "@apollo/client";
 import { getAllEvents } from "../query/eventsQuery";
+import Login from "./Login";
 
 const App: React.FC<{}> = () => {
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const { loading, error, data } = useQuery(getAllEvents);
+
+  const setLoggedInCallback = useCallback(
+    (loggedIn) => setLoggedIn(loggedIn),
+    []
+  );
 
   if (loading) return <div>"LOADING"</div>;
   else if (error) {
@@ -29,17 +35,30 @@ const App: React.FC<{}> = () => {
           <Frame
             topBar={
               <NavBar
-                isLoggedIn={true}
-                user={null}
+                isLoggedIn={isLoggedIn}
                 events={data.sampleEvents}
+                setLoggedInCallback={setLoggedInCallback}
               />
             }
           >
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<Main events={data.sampleEvents} />} />
-                {/* <Route path="/login" element={} />
-                <Route path="/events/:id" element={} /> */}
+                <Route
+                  path="/"
+                  element={
+                    <Main isLoggedIn={isLoggedIn} events={data.sampleEvents} />
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <Login
+                      isLoggedIn={isLoggedIn}
+                      setLoggedInCallback={setLoggedInCallback}
+                    />
+                  }
+                />
+                {/* <Route path="/events/:id" element={} /> */}
               </Routes>
             </BrowserRouter>
           </Frame>
