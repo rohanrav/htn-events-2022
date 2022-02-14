@@ -1,15 +1,20 @@
 import React, { useCallback, useState } from "react";
-import { ActionList, AppProvider, Frame, TopBar } from "@shopify/polaris";
+import { useNavigate } from "react-router-dom";
+import { ActionList, TopBar } from "@shopify/polaris";
 import { TEvent } from "../types";
-import { User } from "../user";
 
 interface Props {
   isLoggedIn: boolean;
   events: TEvent[];
-  user: User | null;
+  setLoggedInCallback: (loggedIn: boolean) => void;
 }
 
-const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
+const NavBar: React.FC<Props> = ({
+  isLoggedIn,
+  events,
+  setLoggedInCallback,
+}) => {
+  const navigate = useNavigate();
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<TEvent[]>(events);
@@ -20,22 +25,16 @@ const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
     setSearchResults(events);
   }, []);
 
-  const handleSearchChange = useCallback((value) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearchValue(value);
     setIsSearchActive(value.length > 0);
     setSearchResults(
-      searchResults.filter((event) => event.name.includes(searchValue))
+      searchResults.filter(({ name, permission }) => {
+        // if (!isLoggedIn && permission === "private") return false;
+        return name.toLowerCase().includes(value.toLowerCase());
+      })
     );
   }, []);
-
-  const theme = {
-    logo: {
-      width: 32,
-      topBarSource: "https://hackthenorth.com/favicon-32x32.png",
-      url: "/",
-      accessibilityLabel: "HackTheNorth Events",
-    },
-  };
 
   const userMenuMarkup = (
     <TopBar.UserMenu
@@ -49,24 +48,33 @@ const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
   );
 
   const authButtonMarkup = (
-    <a
+    <div
+      onClick={() =>
+        isLoggedIn ? setLoggedInCallback(false) : navigate("/login")
+      }
       className={`Polaris-Button Polaris-Button--${
         !isLoggedIn ? "primary" : "destructive"
       }`}
-      type="button"
+      role="button"
     >
       <span className="Polaris-Button__Content">
         <span className="Polaris-Button__Text">
-          {isLoggedIn ? "Log out" : "Log in"}
+          {isLoggedIn ? "Logout" : "Login"}
         </span>
       </span>
-    </a>
+    </div>
   );
 
   const searchResultsMarkup = (
     <ActionList
-      items={searchResults.map((event) => {
-        return { content: event.name };
+      items={searchResults.map(({ id, name }) => {
+        return {
+          content: name,
+          onAction: () => {
+            navigate(`/event/${id}`);
+            handleSearchResultsDismiss();
+          },
+        };
       })}
     />
   );
@@ -75,12 +83,12 @@ const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
     <TopBar.SearchField
       onChange={handleSearchChange}
       value={searchValue}
-      placeholder="Search Events"
+      placeholder="Search"
       showFocusBorder
     />
   );
 
-  const topBarMarkup = (
+  return (
     <TopBar
       showNavigationToggle
       userMenu={
@@ -98,14 +106,6 @@ const NavBar: React.FC<Props> = ({ isLoggedIn, events, user }) => {
       searchResults={searchResultsMarkup}
       onSearchResultsDismiss={handleSearchResultsDismiss}
     />
-  );
-
-  return (
-    <div style={{ height: "250px" }}>
-      <AppProvider theme={theme} i18n={{}}>
-        <Frame topBar={topBarMarkup} />
-      </AppProvider>
-    </div>
   );
 };
 

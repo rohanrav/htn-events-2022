@@ -1,16 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import App from "./components/App";
 import reportWebVitals from "./reportWebVitals";
 
-import enTranslations from "@shopify/polaris/locales/en.json";
-import { AppProvider } from "@shopify/polaris";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { eventsUrl } from "./constants";
+
+const client = new ApolloClient({
+  uri: eventsUrl,
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppProvider i18n={enTranslations}>
+    <ApolloProvider client={client}>
       <App />
-    </AppProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
