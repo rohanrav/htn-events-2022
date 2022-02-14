@@ -19,16 +19,18 @@ const Event: React.FC<Props> = () => {
   const { id } = useParams();
   const { loading, error, data } = useQuery(getEventById(id ? id : ""));
 
+  const errorMarkup = (
+    <Banner title="Error" onDismiss={() => {}} status="critical">
+      <p>There has been an error, please go back to the home page.</p>
+    </Banner>
+  );
+
   const event = data?.sampleEvent as TEvent;
   return (
     <div style={{ marginTop: "50px" }}>
       <Page>
         {loading && <SkeletonEvent />}
-        {error && (
-          <Banner title="Error" onDismiss={() => {}} status="critical">
-            <p>There has been an error, please go back to the home page.</p>
-          </Banner>
-        )}
+        {error && errorMarkup}
         {!loading && !error && (
           <Layout>
             <Layout.Section>
