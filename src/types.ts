@@ -1,32 +1,27 @@
-// Each event will belong to one of the following types
 export type TEventType = "workshop" | "activity" | "tech_talk";
 export type TPermission = "public" | "private";
 
 export type TSpeaker = {
   name: string;
-  profile_pic?: string; // a url to an image
+  profile_pic?: string;
 };
 
-// The information for an event will look like so
 export type TEvent = {
   id: number;
   name: string;
   event_type: TEventType;
   permission?: TPermission;
 
-  start_time: number; // unix timestamp (ms)
-  end_time: number; // unix timestamp (ms)
+  start_time: number;
+  end_time: number;
 
-  description?: string; // a paragraph describing the event
-  speakers: TSpeaker[]; // a list of speakers for the event
+  description?: string;
+  speakers: TSpeaker[];
 
-  public_url?: string; // a url to display for the general public
-  private_url: string; // a url to display for hackers
-  related_events: number[]; // a list ids corresponding to related events
+  public_url?: string;
+  private_url: string;
+  related_events: number[];
 };
 
-// What the endpoints will return
 export type TEndpointResponse = TEvent | TEvent[];
-
-// Modal Sort Type
 export type ModalSortType = "TEL" | "TLE" | "AZ";

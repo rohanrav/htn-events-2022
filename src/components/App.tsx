@@ -10,6 +10,7 @@ import Main from "./Main";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import Event from "./Event";
+import Footer from "./Footer";
 
 const App: React.FC<{}> = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -87,7 +88,7 @@ const App: React.FC<{}> = () => {
                   element={<Event isLoggedIn={isLoggedIn} />}
                 />
               </Routes>
-
+              <Footer />
               {renderToastMarkup()}
             </Frame>
           )}

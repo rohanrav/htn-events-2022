@@ -19,37 +19,43 @@ const Event: React.FC<Props> = () => {
   const { id } = useParams();
   const { loading, error, data } = useQuery(getEventById(id ? id : ""));
 
+  const errorMarkup = (
+    <Banner title="Error" onDismiss={() => {}} status="critical">
+      <p>There has been an error, please go back to the home page.</p>
+    </Banner>
+  );
+
   const event = data?.sampleEvent as TEvent;
   return (
-    <Page>
-      {loading && <SkeletonEvent />}
-      {error && (
-        <Banner title="Error" onDismiss={() => {}} status="critical">
-          <p>There has been an error, please go back to the home page.</p>
-        </Banner>
-      )}
-      {!loading && !error && (
-        <Layout>
-          <Layout.Section>
-            <Stack vertical>
-              <Stack.Item>
-                <DisplayText size="medium">{event?.name}</DisplayText>
-              </Stack.Item>
-              <Stack.Item>
-                <EventBadge eventType={event?.event_type} />
-              </Stack.Item>
-              <Stack.Item>{event?.description}</Stack.Item>
-              <Stack.Item>
-                <RelatedEventContainer relatedEvents={event?.related_events} />
-              </Stack.Item>
-            </Stack>
-          </Layout.Section>
-          <Layout.Section secondary>
-            <SpeakersTable speakers={event?.speakers} />
-          </Layout.Section>
-        </Layout>
-      )}
-    </Page>
+    <div style={{ marginTop: "50px" }}>
+      <Page>
+        {loading && <SkeletonEvent />}
+        {error && errorMarkup}
+        {!loading && !error && (
+          <Layout>
+            <Layout.Section>
+              <Stack vertical>
+                <Stack.Item>
+                  <DisplayText size="medium">{event?.name}</DisplayText>
+                </Stack.Item>
+                <Stack.Item>
+                  <EventBadge eventType={event?.event_type} />
+                </Stack.Item>
+                <Stack.Item>{event?.description}</Stack.Item>
+                <Stack.Item>
+                  <RelatedEventContainer
+                    relatedEvents={event?.related_events}
+                  />
+                </Stack.Item>
+              </Stack>
+            </Layout.Section>
+            <Layout.Section secondary>
+              <SpeakersTable speakers={event?.speakers} />
+            </Layout.Section>
+          </Layout>
+        )}
+      </Page>
+    </div>
   );
 };
 

@@ -30,7 +30,6 @@ const NavBar: React.FC<Props> = ({
     setIsSearchActive(value.length > 0);
     setSearchResults(
       searchResults.filter(({ name, permission }) => {
-        // if (!isLoggedIn && permission === "private") return false;
         return name.toLowerCase().includes(value.toLowerCase());
       })
     );
