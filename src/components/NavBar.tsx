@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ActionList, TopBar } from "@shopify/polaris";
 import { TEvent } from "../types";
 
@@ -13,21 +14,25 @@ const NavBar: React.FC<Props> = ({
   events,
   setLoggedInCallback,
 }) => {
+  const navigate = useNavigate();
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<TEvent[]>(events);
 
   const handleSearchResultsDismiss = useCallback(() => {
     setIsSearchActive(false);
+    setSearchValue("");
+    setSearchResults(events);
   }, []);
 
   const handleSearchChange = useCallback((value: string) => {
     setSearchValue(value);
     setIsSearchActive(value.length > 0);
     setSearchResults(
-      searchResults.filter(({ name }) =>
-        name.toLowerCase().includes(value.toLowerCase())
-      )
+      searchResults.filter(({ name, permission }) => {
+        // if (!isLoggedIn && permission === "private") return false;
+        return name.toLowerCase().includes(value.toLowerCase());
+      })
     );
   }, []);
 
@@ -43,20 +48,21 @@ const NavBar: React.FC<Props> = ({
   );
 
   const authButtonMarkup = (
-    <a
-      onClick={() => isLoggedIn && setLoggedInCallback(false)}
-      href="/login"
+    <div
+      onClick={() =>
+        isLoggedIn ? setLoggedInCallback(false) : navigate("/login")
+      }
       className={`Polaris-Button Polaris-Button--${
         !isLoggedIn ? "primary" : "destructive"
       }`}
-      type="button"
+      role="button"
     >
       <span className="Polaris-Button__Content">
         <span className="Polaris-Button__Text">
-          {isLoggedIn ? "Log out" : "Log in"}
+          {isLoggedIn ? "Logout" : "Login"}
         </span>
       </span>
-    </a>
+    </div>
   );
 
   const searchResultsMarkup = (
@@ -64,7 +70,10 @@ const NavBar: React.FC<Props> = ({
       items={searchResults.map(({ id, name }) => {
         return {
           content: name,
-          url: `/event/${id}`,
+          onAction: () => {
+            navigate(`/event/${id}`);
+            handleSearchResultsDismiss();
+          },
         };
       })}
     />

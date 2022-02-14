@@ -1,8 +1,12 @@
-import { Layout, Card, Banner } from "@shopify/polaris";
-import _ from "lodash";
 import React from "react";
-import { ModalSortType, TEvent, TEventType } from "../types";
+import { useNavigate } from "react-router-dom";
+
+import _ from "lodash";
+
+import { Layout, Card, Banner } from "@shopify/polaris";
 import EventBadge from "./EventBadge";
+
+import { ModalSortType, TEvent, TEventType } from "../types";
 
 interface Props {
   events: TEvent[];
@@ -17,7 +21,9 @@ const CardContainer: React.FC<Props> = ({
   filterOptions,
   isLoggedIn,
 }) => {
+  const navigate = useNavigate();
   const sortedEvents = [...events];
+
   sortedEvents.sort((e1, e2) => {
     if (sortOption === "AZ") {
       return e1.name.charCodeAt(0) - e2.name.charCodeAt(0);
@@ -38,7 +44,6 @@ const CardContainer: React.FC<Props> = ({
         private_url,
         permission,
         description,
-        start_time,
       }) => {
         if (
           !filterOptions.includes(event_type) ||
@@ -53,7 +58,7 @@ const CardContainer: React.FC<Props> = ({
               title={`${name.substring(0, 27)}${name.length > 27 ? "..." : ""}`}
               primaryFooterAction={{
                 content: "More Info",
-                url: `/event/${id}`,
+                onAction: () => navigate(`/event/${id}`),
               }}
               secondaryFooterActions={[
                 {

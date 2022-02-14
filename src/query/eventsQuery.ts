@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const getEventById = (id: number) => gql`
+export const getEventById = (id: string) => gql`
   query {
     sampleEvent(id: ${id}) {
         id

@@ -1,6 +1,15 @@
-import { Page, Form, FormLayout, TextField, Button } from "@shopify/polaris";
-import React, { useCallback, useState } from "react";
-import { Navigate } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Page,
+  Form,
+  FormLayout,
+  TextField,
+  Button,
+  Stack,
+  DisplayText,
+  Toast,
+} from "@shopify/polaris";
 
 interface Props {
   isLoggedIn: boolean;
@@ -10,12 +19,26 @@ interface Props {
 const Login: React.FC<Props> = ({ isLoggedIn, setLoggedInCallback }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isToastActive, setToastActive] = useState(false);
+  const navigate = useNavigate();
+  const toggleToast = useCallback(
+    () => setToastActive((isToastActive) => !isToastActive),
+    []
+  );
+
+  useEffect(() => {
+    if (isLoggedIn) navigate("/");
+  }, [isLoggedIn]);
+
+  const toastMarkup = isToastActive ? (
+    <Toast
+      content="Error: Incorrect Login Credentials"
+      error
+      onDismiss={toggleToast}
+    />
+  ) : null;
 
   const handleSubmit = () => {
-    console.log(process.env.REACT_APP_EMAIL);
-    console.log(process.env.REACT_APP_PASSWORD);
-    console.log(email);
-    console.log(password);
     if (
       email === process.env.REACT_APP_EMAIL &&
       password === process.env.REACT_APP_PASSWORD
@@ -23,6 +46,7 @@ const Login: React.FC<Props> = ({ isLoggedIn, setLoggedInCallback }) => {
       setLoggedInCallback(true);
     } else {
       setPassword("");
+      toggleToast();
     }
   };
 
@@ -30,31 +54,50 @@ const Login: React.FC<Props> = ({ isLoggedIn, setLoggedInCallback }) => {
   const handleEmailChange = useCallback((value) => setEmail(value), []);
 
   return (
-    <>
-      {isLoggedIn && <Navigate to="/" />}
-      <Page>
-        <Form onSubmit={handleSubmit}>
-          <FormLayout>
-            <TextField
-              value={email}
-              onChange={handleEmailChange}
-              label="Email"
-              type="email"
-              autoComplete="email"
-            />
+    <div style={{ height: "70vh", width: "100%" }}>
+      <div
+        style={{
+          position: "relative",
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
+        <Page>
+          <Stack vertical>
+            <Stack.Item>
+              <DisplayText size="large">Sign In</DisplayText>
+            </Stack.Item>
+            <Stack.Item>
+              <Form onSubmit={handleSubmit}>
+                <FormLayout>
+                  <TextField
+                    value={email}
+                    onChange={handleEmailChange}
+                    label="Email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="name@domain.com"
+                  />
 
-            <TextField
-              value={password}
-              onChange={handlePasswordChange}
-              label="Password"
-              type="password"
-              autoComplete="off"
-            />
-            <Button submit>Submit</Button>
-          </FormLayout>
-        </Form>
-      </Page>
-    </>
+                  <TextField
+                    value={password}
+                    onChange={handlePasswordChange}
+                    label="Password"
+                    type="password"
+                    autoComplete="off"
+                    placeholder="Password"
+                  />
+                  <Button submit primary fullWidth size="large">
+                    Login
+                  </Button>
+                </FormLayout>
+              </Form>
+            </Stack.Item>
+          </Stack>
+          {toastMarkup}
+        </Page>
+      </div>
+    </div>
   );
 };
 

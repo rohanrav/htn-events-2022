@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Button, Heading, Layout, Page, Stack } from "@shopify/polaris";
+import React, { useCallback, useState } from "react";
+import { Button, DisplayText, Layout, Page, Stack } from "@shopify/polaris";
 import CardContainer from "./CardContainer";
 import FilterModal from "./FilterModal";
 import { ModalSortType, TEvent, TEventType } from "../types";
@@ -28,8 +28,6 @@ const Main: React.FC<Props> = ({ events, isLoggedIn }) => {
     []
   );
 
-  useEffect(() => console.log(filterValues));
-
   return (
     <>
       <FilterModal
@@ -41,14 +39,16 @@ const Main: React.FC<Props> = ({ events, isLoggedIn }) => {
         filterOptionsCallback={filterOptionsCallback}
       ></FilterModal>
       <Page>
-        <Stack>
-          <Stack.Item fill>
-            <Heading>Events</Heading>
-          </Stack.Item>
-          <Stack.Item>
-            <Button onClick={() => setModalActive(true)}>Sort/Filter</Button>
-          </Stack.Item>
-        </Stack>
+        <div style={{ padding: "7.5px 0" }}>
+          <Stack>
+            <Stack.Item fill>
+              <DisplayText size="small">Events</DisplayText>
+            </Stack.Item>
+            <Stack.Item>
+              <Button onClick={() => setModalActive(true)}>Sort/Filter</Button>
+            </Stack.Item>
+          </Stack>
+        </div>
         <Layout>
           <CardContainer
             events={events}
