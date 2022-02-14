@@ -64,6 +64,7 @@ const CardContainer: React.FC<Props> = ({
                 {
                   content: "Event Link",
                   url: formattedUrl,
+                  external: true,
                 },
               ]}
             >

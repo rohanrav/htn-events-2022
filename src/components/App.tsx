@@ -15,7 +15,7 @@ import Footer from "./Footer";
 const App: React.FC<{}> = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isToastActive, setToastActive] = useState(false);
-  let { loading, error, data } = useQuery(getAllEvents);
+  const { loading, error, data } = useQuery(getAllEvents);
 
   const setLoggedInCallback = useCallback((loggedIn) => {
     setLoggedIn(loggedIn);

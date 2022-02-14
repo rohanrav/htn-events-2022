@@ -5,7 +5,14 @@ import { useQuery } from "@apollo/client";
 import { getEventById } from "../query/eventsQuery";
 import { TEvent } from "../types";
 
-import { Banner, DisplayText, Layout, Page, Stack } from "@shopify/polaris";
+import {
+  Banner,
+  Button,
+  DisplayText,
+  Layout,
+  Page,
+  Stack,
+} from "@shopify/polaris";
 import EventBadge from "./EventBadge";
 import SpeakersTable from "./SpakersTable";
 import RelatedEventContainer from "./RelatedEventContainer";
@@ -46,6 +53,20 @@ const Event: React.FC<Props> = () => {
                   <RelatedEventContainer
                     relatedEvents={event?.related_events}
                   />
+                </Stack.Item>
+                <Stack.Item>
+                  <Button
+                    fullWidth
+                    primary
+                    external
+                    url={
+                      event?.permission === "private"
+                        ? event?.private_url
+                        : event?.public_url
+                    }
+                  >
+                    Event Link
+                  </Button>
                 </Stack.Item>
               </Stack>
             </Layout.Section>
