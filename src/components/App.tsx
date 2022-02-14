@@ -4,20 +4,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { getAllEvents } from "../query/eventsQuery";
 
-import {
-  AppProvider,
-  Banner,
-  FooterHelp,
-  Frame,
-  Link,
-  Loading,
-  Toast,
-} from "@shopify/polaris";
+import { AppProvider, Banner, Frame, Loading, Toast } from "@shopify/polaris";
 import theme from "../theme";
 import Main from "./Main";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import Event from "./Event";
+import Footer from "./Footer";
 
 const App: React.FC<{}> = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -95,15 +88,7 @@ const App: React.FC<{}> = () => {
                   element={<Event isLoggedIn={isLoggedIn} />}
                 />
               </Routes>
-              <div style={{ padding: "20px 0" }}>
-                <FooterHelp>
-                  Learn more about{" "}
-                  <Link external url="https://hackthenorth.com/">
-                    HackTheNorth
-                  </Link>{" "}
-                  here!
-                </FooterHelp>
-              </div>
+              <Footer />
               {renderToastMarkup()}
             </Frame>
           )}
