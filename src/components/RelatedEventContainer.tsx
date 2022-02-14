@@ -1,5 +1,5 @@
 import React from "react";
-import { DisplayText, List } from "@shopify/polaris";
+import { Banner, DisplayText, List } from "@shopify/polaris";
 import RelatedEvent from "./RelatedEvent";
 
 interface Props {
@@ -7,9 +7,20 @@ interface Props {
 }
 
 const RelatedEventContainer: React.FC<Props> = ({ relatedEvents }) => {
+  const noRelatedEventsBannerMarkup = (
+    <Banner
+      title="No Related Events"
+      onDismiss={() => {}}
+      status="info"
+    ></Banner>
+  );
+
   return (
     <>
-      <DisplayText size="small">Related Events</DisplayText>
+      <div style={{ marginBottom: "10px" }}>
+        <DisplayText size="small">Related Events</DisplayText>
+      </div>
+      {relatedEvents.length === 0 && noRelatedEventsBannerMarkup}
       <List>
         {relatedEvents.map((id) => (
           <List.Item key={id}>

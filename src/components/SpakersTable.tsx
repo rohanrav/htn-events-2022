@@ -6,6 +6,7 @@ import {
   ResourceItem,
   TextStyle,
   DisplayText,
+  Banner,
 } from "@shopify/polaris";
 import { TSpeaker } from "../types";
 
@@ -14,9 +15,16 @@ interface Props {
 }
 
 const SpeakersTable: React.FC<Props> = ({ speakers }) => {
+  const noSpeakersBannerMarkup = (
+    <Banner title="No Speakers" onDismiss={() => {}} status="info"></Banner>
+  );
+
   return (
     <>
-      <DisplayText size="small">Speakers</DisplayText>
+      <div style={{ marginBottom: "10px" }}>
+        <DisplayText size="small">Speakers</DisplayText>
+      </div>
+      {speakers.length === 0 && noSpeakersBannerMarkup}
       <Card>
         <ResourceList
           resourceName={{ singular: "speaker", plural: "speakers" }}

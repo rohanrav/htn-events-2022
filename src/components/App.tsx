@@ -4,7 +4,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { getAllEvents } from "../query/eventsQuery";
 
-import { AppProvider, Banner, Frame, Loading, Toast } from "@shopify/polaris";
+import {
+  AppProvider,
+  Banner,
+  FooterHelp,
+  Frame,
+  Link,
+  Loading,
+  Toast,
+} from "@shopify/polaris";
 import theme from "../theme";
 import Main from "./Main";
 import NavBar from "./NavBar";
@@ -87,7 +95,15 @@ const App: React.FC<{}> = () => {
                   element={<Event isLoggedIn={isLoggedIn} />}
                 />
               </Routes>
-
+              <div style={{ padding: "20px 0" }}>
+                <FooterHelp>
+                  Learn more about{" "}
+                  <Link external url="https://hackthenorth.com/">
+                    HackTheNorth
+                  </Link>{" "}
+                  here!
+                </FooterHelp>
+              </div>
               {renderToastMarkup()}
             </Frame>
           )}
