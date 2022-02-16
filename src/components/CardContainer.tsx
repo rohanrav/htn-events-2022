@@ -47,7 +47,7 @@ const CardContainer: React.FC<Props> = ({
       }) => {
         if (
           !filterOptions.includes(event_type) ||
-          (!isLoggedIn && permission == "private")
+          (!isLoggedIn && permission === "private")
         )
           return;
         const formattedDescription = description ? description : "";

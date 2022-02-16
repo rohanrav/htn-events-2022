@@ -32,7 +32,13 @@ const SpeakersTable: React.FC<Props> = ({ speakers }) => {
           renderItem={(item: TSpeaker) => {
             const { name, profile_pic } = item;
             const media = (
-              <Avatar customer size="medium" name={name} source={profile_pic} />
+              <Avatar
+                customer
+                size="medium"
+                name={name}
+                source={profile_pic}
+                accessibilityLabel={name}
+              />
             );
 
             return (
