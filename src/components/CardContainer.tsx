@@ -49,9 +49,9 @@ const CardContainer: React.FC<Props> = ({
           !filterOptions.includes(event_type) ||
           (!isLoggedIn && permission === "private")
         )
-          return;
+          return null;
         const formattedDescription = description ? description : "";
-        const formattedUrl = permission == "public" ? public_url : private_url;
+        const formattedUrl = permission === "public" ? public_url : private_url;
         return (
           <Layout.Section key={id} oneThird>
             <Card
