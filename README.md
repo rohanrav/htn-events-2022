@@ -2,7 +2,7 @@
 
 ## Important Information
 
-- You can visit the deployed application at the link []()
+- You can visit the deployed application at the link [here](https://htn-events.herokuapp.com/)
 - Use the Log In Credentials (Username: "john.doe@htn.com", Password: "password")
 - Additional functionality implemented: Filter + Sort Events, Search Events, Loading Animations (Skeleton content)
 
