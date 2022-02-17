@@ -35,7 +35,7 @@ const NavBar: React.FC<Props> = ({
     );
   }, []);
 
-  const userMenuMarkup = (
+  const secondaryUserMenuMarkup = (
     <TopBar.UserMenu
       actions={[]}
       name="John Doe"
@@ -64,6 +64,16 @@ const NavBar: React.FC<Props> = ({
     </div>
   );
 
+  const primaryUserMenuMarkup = (
+    <TopBar.Menu
+      activatorContent={authButtonMarkup}
+      open={true}
+      onOpen={() => {}}
+      onClose={() => {}}
+      actions={[]}
+    />
+  );
+
   const searchResultsMarkup = (
     <ActionList
       items={searchResults.map(({ id, name }) => {
@@ -90,16 +100,8 @@ const NavBar: React.FC<Props> = ({
   return (
     <TopBar
       showNavigationToggle
-      userMenu={
-        <TopBar.Menu
-          activatorContent={authButtonMarkup}
-          open={true}
-          onOpen={() => {}}
-          onClose={() => {}}
-          actions={[]}
-        />
-      }
-      secondaryMenu={isLoggedIn && userMenuMarkup}
+      userMenu={primaryUserMenuMarkup}
+      secondaryMenu={isLoggedIn && secondaryUserMenuMarkup}
       searchResultsVisible={isSearchActive}
       searchField={searchFieldMarkup}
       searchResults={searchResultsMarkup}

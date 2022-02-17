@@ -46,7 +46,7 @@ const SpeakersTable: React.FC<Props> = ({ speakers }) => {
                 id={name}
                 url=""
                 media={media}
-                accessibilityLabel={`View details for ${name}`}
+                accessibilityLabel={`Image of speaker: ${name}`}
               >
                 <h3>
                   <TextStyle variation="strong">{name}</TextStyle>
